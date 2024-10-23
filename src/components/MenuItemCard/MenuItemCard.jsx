@@ -2,8 +2,6 @@ import React from 'react';
 import { Trash2Icon } from 'lucide-react';
 
 const MenuItemCard = ({ image, title, price, available, onDelete, onEdit }) => {
-    console.log(image);
-
     return (
         <div className="bg-white rounded-3xl shadow-lg p-4 w-72 relative">
             <div className="relative">

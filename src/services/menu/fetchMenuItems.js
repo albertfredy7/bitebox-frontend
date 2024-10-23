@@ -3,7 +3,6 @@ import { logoutUser } from "../auth/auth";
 
 export const fetchMenuItems = async () => {
     const token = localStorage.getItem('token');
-    console.log(token);
     try {
       const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
       const response = await api.get('/menu', config);

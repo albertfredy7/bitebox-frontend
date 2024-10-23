@@ -8,6 +8,7 @@ import { ShoppingCartIcon, ChefHatIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Student = () => {
+  const carts = localStorage.getItem('cart')
   const [menuItems, setMenuItems] = useState([]);
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [total, setTotal] = useAtom(cartTotalAtom);
@@ -21,6 +22,7 @@ const Student = () => {
       try {
         const response = await api.get('/menu');
         setMenuItems(response.data);
+        if(carts!==null) setCartItems(JSON.parse(carts))
       } catch (error) {
         toast.error("There was a problem fetching the menu items from the server.");
         console.error('Error fetching menu items:', error);
@@ -45,10 +47,13 @@ const Student = () => {
         cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem
       );
       setCartItems(updatedCart);
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
     } else {
-      setCartItems([...cartItems, { ...item, quantity: 1 }]);
+      let newcart = [...cartItems, { ...item, quantity: 1 }]
+      setCartItems(newcart);
+      localStorage.setItem('cart', JSON.stringify(newcart))
     }
-    
+
     // Recalculate total price after updating cart
     const newTotal = calculateTotal(cartItems);
     setTotal(newTotal);
@@ -58,7 +63,7 @@ const Student = () => {
     <div className="min-h-screen bg-gray-50 relative">
       <Toaster position="top-right" reverseOrder={false} />
 
-      <motion.header 
+      <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         className="bg-teal-600 text-white py-6 shadow-lg sticky top-0 z-10"
@@ -87,9 +92,8 @@ const Student = () => {
 
       {/* Cart Sidebar */}
       <div
-        className={`fixed right-0 top-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 z-20 ${
-          isCartOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed right-0 top-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 z-20 ${isCartOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
       >
         <div className="p-4">
           <div className="flex justify-between items-center mb-4">
@@ -134,16 +138,16 @@ const Student = () => {
         {loading ? (
           <p className="text-center">Loading menu items...</p>
         ) : (
-          menuItems.map((item, key) => (
+          menuItems.map((item, key) => (<>
             <MenuItemCard
               key={key}
-              id={item.id}
+              id={item._id}
               image={item.imageUrl}
-              title={item.title}
+              title={item.name}
               price={item.price}
               available={item.available}
               onAddToCart={handleAddToCart} // Pass the add-to-cart function
-            />
+            /></>
           ))
         )}
       </main>

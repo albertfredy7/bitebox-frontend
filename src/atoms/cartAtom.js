@@ -16,5 +16,6 @@ export const removeFromCartAtom = atom(
   (get, set, itemId) => {
     const updatedCart = get(cartItemsAtom).filter((item) => item.id !== itemId);
     set(cartItemsAtom, updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
   }
 );

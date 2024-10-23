@@ -16,8 +16,7 @@ const MenuItemCard = ({ id, image, title, price, onAddToCart, quantity }) => {
                     )}
                     <button 
                         onClick={() => onAddToCart({ id, image, title, price, quantity: 1 })}
-                        className="bg-teal-400 text-white text-sm font-semibold py-2 px-4 rounded-full flex items-center transition-all hover:bg-gray-800"
-                    >
+                        className="bg-teal-400 text-white text-sm font-semibold py-2 px-4 rounded-full flex items-center transition-all hover:bg-gray-800">
                         Add to Cart
                         <span className="ml-2">→</span>
                     </button>

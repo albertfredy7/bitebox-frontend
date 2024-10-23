@@ -1,5 +1,5 @@
-// src/App.js
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// src/App.jsx
+import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './Pages/Home';
 import Settings from './Pages/Settings';
@@ -7,34 +7,93 @@ import Menu from './Pages/Menu';
 import Products from './Pages/Products';
 import Orders from './Pages/Orders';
 import Login from './Pages/Login';
-import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
 import Users from './Pages/Users';
 import { Toaster } from 'react-hot-toast';
 import PageNotFound from './Pages/PageNotFound';
 import Student from './Pages/Student';
+import RoleBasedRoute from './components/RoleBasedRoutes'; // Make sure this matches the actual file name
+import { useAuth } from './context/AuthContext';
 
 const App = () => {
   return (
     <>
       <Toaster position="top-right" />
       <Routes>
+        {/* Public routes */}
         <Route path="/login" element={<Login isLogin={true} />} />
         <Route path="/register" element={<Login isLogin={false} />} />
-        <Route path='/student' element={<Student/>}/>
+        
+        {/* Student-only route */}
+        <Route 
+          path="/student" 
+          element={
+            <RoleBasedRoute 
+              element={<Student />} 
+              allowedRoles={['student']} 
+            />
+          }
+        />
+
+        {/* Canteen staff routes wrapped in Layout */}
         <Route path="/" element={<Layout />}>
-          <Route index element={<PrivateRoute element={<Home />} />} />
-          <Route path="settings" element={<PrivateRoute element={<Settings />} />} />
-          <Route path="menu" element={<PrivateRoute element={<Menu />} />} />
-          <Route path="products" element={<PrivateRoute element={<Products />} />} />
-          <Route path="orders" element={<PrivateRoute element={<Orders />} />} />
-          <Route path="users" element={<PrivateRoute element={<Users />} />} />
-
+          <Route index 
+            element={
+              <RoleBasedRoute 
+                element={<Home />} 
+                allowedRoles={['canteen']} 
+              />
+            } 
+          />
+          <Route 
+            path="settings" 
+            element={
+              <RoleBasedRoute 
+                element={<Settings />} 
+                allowedRoles={['canteen']} 
+              />
+            } 
+          />
+          <Route 
+            path="menu" 
+            element={
+              <RoleBasedRoute 
+                element={<Menu />} 
+                allowedRoles={['canteen']} 
+              />
+            } 
+          />
+          <Route 
+            path="products" 
+            element={
+              <RoleBasedRoute 
+                element={<Products />} 
+                allowedRoles={['canteen']} 
+              />
+            } 
+          />
+          <Route 
+            path="orders" 
+            element={
+              <RoleBasedRoute 
+                element={<Orders />} 
+                allowedRoles={['canteen']} 
+              />
+            } 
+          />
+          <Route 
+            path="users" 
+            element={
+              <RoleBasedRoute 
+                element={<Users />} 
+                allowedRoles={['canteen']} 
+              />
+            } 
+          />
         </Route>
-        <Route path="*" element={<PageNotFound />} /> {/* Catch-all route for 404 */}
-
+        {/* 404 route */}
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
-
   );
 };
 
