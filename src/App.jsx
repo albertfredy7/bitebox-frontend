@@ -11,6 +11,7 @@ import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
 import Users from './Pages/Users';
 import { Toaster } from 'react-hot-toast';
 import PageNotFound from './Pages/PageNotFound';
+import Student from './Pages/Student';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<Login isLogin={true} />} />
         <Route path="/register" element={<Login isLogin={false} />} />
+        <Route path='/student' element={<Student/>}/>
         <Route path="/" element={<Layout />}>
           <Route index element={<PrivateRoute element={<Home />} />} />
           <Route path="settings" element={<PrivateRoute element={<Settings />} />} />

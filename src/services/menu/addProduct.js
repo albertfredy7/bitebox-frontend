@@ -1,16 +1,21 @@
-import axios from '../api'; // assuming axios is set up with baseURL
+// addProduct.js
+import axios from '../api';
 
 const addProduct = async (productData) => {
   try {
-    const token = localStorage.getItem('token'); // Or however you manage tokens
+    const token = localStorage.getItem('token');
     const response = await axios.post('/menu', productData, {
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json', // Changed from multipart/form-data
       },
     });
 
-    return response;
+    return {
+      success: true,
+      status: response.status,
+      data: response.data
+    };
   } catch (error) {
     console.error('Error adding product:', error);
     throw error;
