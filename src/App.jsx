@@ -7,12 +7,15 @@ import Menu from './Pages/Menu';
 import Products from './Pages/Products';
 import Orders from './Pages/Orders';
 import Login from './Pages/Login';
-import Users from './Pages/Users';
 import { Toaster } from 'react-hot-toast';
 import PageNotFound from './Pages/PageNotFound';
 import Student from './Pages/Student';
 import RoleBasedRoute from './components/RoleBasedRoutes'; // Make sure this matches the actual file name
 import { useAuth } from './context/AuthContext';
+import StudentLayout from './components/StudentLayout';
+import MyOrders from './Pages/MyOrders';
+import Complaints from './Pages/Complaints';
+import Forum from './Pages/Forum';
 
 const App = () => {
   return (
@@ -22,72 +25,72 @@ const App = () => {
         {/* Public routes */}
         <Route path="/login" element={<Login isLogin={true} />} />
         <Route path="/register" element={<Login isLogin={false} />} />
-        
+
         {/* Student-only route */}
-        <Route 
-          path="/student" 
-          element={
-            <RoleBasedRoute 
-              element={<Student />} 
-              allowedRoles={['student']} 
-            />
-          }
-        />
+        <Route
+          path="/student"
+          element={ <StudentLayout/>}
+        >
+          <Route
+            path="myorders"
+            element={
+              <RoleBasedRoute
+                element={<MyOrders />}
+                allowedRoles={['student']}
+              />
+            }
+          />
+          <Route
+            path="forum"
+            element={
+              <RoleBasedRoute
+                element={<Forum />}
+                allowedRoles={['student']}
+              />
+            }
+          />
+
+          <Route
+            index
+            element={
+              <RoleBasedRoute
+                element={<Student />}
+                allowedRoles={['student']}
+              />
+            }
+          />
+          
+
+        </Route>
 
         {/* Canteen staff routes wrapped in Layout */}
         <Route path="/" element={<Layout />}>
-          <Route index 
+          <Route
+          index
             element={
-              <RoleBasedRoute 
-                element={<Home />} 
-                allowedRoles={['canteen']} 
+              <RoleBasedRoute
+                element={<Menu />}
+                allowedRoles={['canteen']}
               />
-            } 
+            }
           />
-          <Route 
-            path="settings" 
+          <Route
+            path="orders"
             element={
-              <RoleBasedRoute 
-                element={<Settings />} 
-                allowedRoles={['canteen']} 
+              <RoleBasedRoute
+                element={<Orders />}
+                allowedRoles={['canteen']}
               />
-            } 
+            }
           />
-          <Route 
-            path="menu" 
+          <Route
+            path="complaints"
             element={
-              <RoleBasedRoute 
-                element={<Menu />} 
-                allowedRoles={['canteen']} 
+              <RoleBasedRoute
+                element={<Complaints />}
+                allowedRoles={['canteen']}
               />
-            } 
-          />
-          <Route 
-            path="products" 
-            element={
-              <RoleBasedRoute 
-                element={<Products />} 
-                allowedRoles={['canteen']} 
-              />
-            } 
-          />
-          <Route 
-            path="orders" 
-            element={
-              <RoleBasedRoute 
-                element={<Orders />} 
-                allowedRoles={['canteen']} 
-              />
-            } 
-          />
-          <Route 
-            path="users" 
-            element={
-              <RoleBasedRoute 
-                element={<Users />} 
-                allowedRoles={['canteen']} 
-              />
-            } 
+            }
           />
         </Route>
         {/* 404 route */}

@@ -13,32 +13,24 @@ const Layout = () => {
             </div>
             <nav className="space-y-2 p-4">
               <NavLink to="/" className={({ isActive }) => `flex items-center p-2 rounded-lg ${isActive ? 'bg-teal-400 text-white' : 'text-gray-700 hover:bg-gray-100'}`}>
-                <Home className="w-5 h-5 mr-3" />
-                <span>Home</span>
+                <Utensils className="w-5 h-5 mr-3" />
+                <span>Menu</span>
               </NavLink>
               <NavLink to="/orders" className={({ isActive }) => `flex items-center p-2 rounded-lg ${isActive ? 'bg-teal-400 text-white' : 'text-gray-700 hover:bg-gray-100'}`}>
                 <ShoppingCart className="w-5 h-5 mr-3" />
                 <span>Orders</span>
               </NavLink>
-              <NavLink to="/menu" className={({ isActive }) => `flex items-center p-2 rounded-lg ${isActive ? 'bg-teal-400 text-white' : 'text-gray-700 hover:bg-gray-100'}`}>
-                <Utensils className="w-5 h-5 mr-3" />
-                <span>Menu</span>
-              </NavLink>
-              <NavLink to="/settings" className={({ isActive }) => `flex items-center p-2 rounded-lg ${isActive ? 'bg-teal-400 text-white' : 'text-gray-700 hover:bg-gray-100'}`}>
-                <Settings className="w-5 h-5 mr-3" />
-                <span>Settings</span>
-              </NavLink>
-              <NavLink to="/users" className={({ isActive }) => `flex items-center p-2 rounded-lg ${isActive ? 'bg-teal-400 text-white' : 'text-gray-700 hover:bg-gray-100'}`}>
+              <NavLink to="/complaints" className={({ isActive }) => `flex items-center p-2 rounded-lg ${isActive ? 'bg-teal-400 text-white' : 'text-gray-700 hover:bg-gray-100'}`}>
                 <Users className="w-5 h-5 mr-3" />
-                <span>Users</span>
+                <span>Complaints</span>
               </NavLink>
             </nav>
           </div>
           <div className="p-4">
             <button
-             className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-             onClick={logoutUser}
-             >
+              className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+              onClick={logoutUser}
+            >
               <LogOut className="w-5 h-5 mr-3" />
               <span>Sign Out</span>
             </button>

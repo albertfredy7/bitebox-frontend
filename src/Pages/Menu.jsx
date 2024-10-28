@@ -50,7 +50,7 @@ const Menu = () => {
     <div>
       <div className='float-end'>
         <div className='flex justify-evenly '>
-          <SearchBar /> {/* Pass the search function to SearchBar */}
+          {/* <SearchBar /> Pass the search function to SearchBar */}
           <button
             className='bg-gray-900 text-white px-10 py-2 rounded-lg'
             onClick={() => setIsModalOpen(true)}> {/* Set modal to open */}

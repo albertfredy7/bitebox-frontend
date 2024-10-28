@@ -10,6 +10,8 @@ export const cartTotalAtom = atom((get) =>
   get(cartItemsAtom).reduce((total, item) => total + item.price * item.quantity, 0)
 );
 
+
+
 // Function to remove an item from the cart
 export const removeFromCartAtom = atom(
   null,
