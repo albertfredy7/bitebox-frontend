@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { postComplaint } from '../services/complaints/postComplaints';
+import { fetchComplaints } from '../services/complaints/fetchComplaints';
 
 const Forum = () => {
   const [complaints, setComplaints] = useState([]);
@@ -8,36 +9,25 @@ const Forum = () => {
   const [description, setDescription] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch JWT token from local storage
-  const token = localStorage.getItem('token');
-
-  // Handle complaint form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/complaints',
-        { subject, description },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Pass token in headers
-          },
-        }
-      );
-
-      const newComplaint = response.data;
-      setComplaints([newComplaint, ...complaints]);
+      const newComplaint = await postComplaint(subject, description);
+      setComplaints([newComplaint, ...complaints]); // Update complaints with new complaint
       setSubject("");
       setDescription("");
       setIsModalOpen(false);
-
-      toast.success("Your complaint has been successfully submitted.");
     } catch (error) {
       console.error("Error posting complaint:", error);
-      toast.error("Failed to submit the complaint. Please try again.");
     }
   };
+
+  useEffect(() => {
+    fetchComplaints().then(data => {
+      setComplaints(data);
+    });
+  }, []);
 
   return (
     <div className="container mx-auto p-6">
@@ -73,7 +63,7 @@ const Forum = () => {
                   onChange={(e) => setSubject(e.target.value)}
                   placeholder="Enter the subject of your complaint"
                   required
-                  className="w-full mt-2 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full mt-2 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
               </div>
               <div>
@@ -86,12 +76,12 @@ const Forum = () => {
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Describe your complaint in detail"
                   required
-                  className="w-full mt-2 p-2 border rounded min-h-[150px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full mt-2 p-2 border rounded min-h-[150px] focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
               </div>
               <button 
                 type="submit" 
-                className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                className="w-full bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
               >
                 Submit Complaint
               </button>
@@ -101,31 +91,31 @@ const Forum = () => {
       )}
 
       {/* Complaints List */}
-      {complaints.length === 0 ? (
+      {complaints?.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg">No complaints filed yet</p>
         </div>
       ) : (
         <div className="grid gap-4">
           {complaints.map((complaint) => (
-            <div key={complaint.id} className="bg-white p-6 rounded-lg shadow">
+            <div key={complaint?.id} className="bg-white p-6 rounded-lg shadow">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="font-semibold text-lg">{complaint.subject}</h3>
+                  <h3 className="font-semibold text-lg">{complaint?.subject}</h3>
                   <p className="text-sm text-gray-500">
-                    {new Date(complaint.createdAt).toLocaleDateString()} at{" "}
-                    {new Date(complaint.createdAt).toLocaleTimeString()}
+                    {new Date(complaint?.createdAt).toLocaleDateString()} at{" "}
+                    {new Date(complaint?.createdAt).toLocaleTimeString()}
                   </p>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-sm ${
-                  complaint.status === 'pending' 
+                  complaint?.status === 'pending' 
                     ? 'bg-yellow-100 text-yellow-800' 
                     : 'bg-green-100 text-green-800'
                 }`}>
-                  {complaint.status}
+                  {complaint?.status}
                 </span>
               </div>
-              <p className="text-gray-700 whitespace-pre-wrap">{complaint.description}</p>
+              <p className="text-gray-700 whitespace-pre-wrap">{complaint?.description}</p>
             </div>
           ))}
         </div>

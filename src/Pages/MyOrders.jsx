@@ -37,7 +37,7 @@ export default function MyOrders() {
             case 'accepted':
                 return 'bg-green-500';
             case 'delivered':
-                return 'bg-black-500';
+                return 'bg-black';
             default:
                 return 'bg-gray-500';
         }
@@ -85,6 +85,7 @@ export default function MyOrders() {
                             <p className="text-sm text-gray-500 mb-4">
                                 {format(new Date(order.orderTime), "PPp")}
                             </p>
+                            
 
                             <div className="flex-1 overflow-y-auto mb-4">
                                 {order.items.map((item, index) => (

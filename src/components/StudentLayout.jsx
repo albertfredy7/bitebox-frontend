@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ShoppingCartIcon, User, Utensils, FileWarning, CircleMinus, CirclePlus } from 'lucide-react';
+import { ShoppingCartIcon, User, Utensils, FileWarning, CircleMinus, CirclePlus, LogOut } from 'lucide-react';
 import { cartItemsAtom, removeFromCartAtom } from '../atoms/cartAtom';
 import { useAtom } from 'jotai';
 import { placeOrder } from '../services/orders/placeOrder';
@@ -48,7 +48,7 @@ const StudentLayout = () => {
                                 initial={{ opacity: 0, y: 0 }}
                                 animate={{ opacity: 1, y: 10 }}
                                 transition={{ duration: 0.2 }}
-                                className='absolute top-16 right-2 w-full md:w-fit text-gray-900 bg-white shadow-md p-5 rounded-lg'
+                                className='absolute top-16 right-5 w-full md:w-fit text-gray-900 bg-white shadow-md p-5 rounded-lg'
                             >
                                 <div className="flex flex-col">
                                     <ul className="space-y-0">
@@ -63,13 +63,17 @@ const StudentLayout = () => {
                                             </button>
                                         </li>
                                         <li>
-                                            <button className="w-full text-left py-2 hover:bg-gray-100 flex gap-3">
+                                            <button onClick = {()=>{
+                                                navigate('forum');
+                                                setIsAccountOpen(false);
+                                            }}
+                                            className="w-full text-left py-2 hover:bg-gray-100 flex gap-3">
                                                 <FileWarning size={18} /> Complaints
                                             </button>
                                         </li>
                                         <li>
-                                            <button className="w-full text-left py-2 hover:bg-gray-100" onClick={() => logoutUser()}>
-                                                Logout
+                                            <button  className="w-full text-left py-2 hover:bg-gray-100 flex gap-3" onClick={() => logoutUser()}>
+                                               <LogOut size={18}/> Logout
                                             </button>
                                         </li>
                                     </ul>
